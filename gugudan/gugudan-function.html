@@ -28,9 +28,9 @@
                     setValue(e.target.value);
                 };
 
-                onSubmitForm = (e) => {
+                const onSubmitForm = (e) => {
                     e.preventDefault();
-                    if (parseInt(this.state.value) === this.state.firstNum * this.state.secondNum) {
+                    if (parseInt(value) === firstNum * secondNum) {
                         setResult(`정답: ${value}`);
                         setFirstNum(Math.ceil(Math.random() * 9));
                         setSecondNum(Math.ceil(Math.random() * 9));
@@ -38,8 +38,6 @@
                         inputRef.current.focus();
                     } else {
                         setResult(`${value}?? 구구단도 못하는데 무슨 리액트`);
-                        setFirstNum(Math.ceil(Math.random() * 9));
-                        setSecondNum(Math.ceil(Math.random() * 9));
                         setValue('');
                         inputRef.current.focus();
                     }
