@@ -1,0 +1,83 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>웹게임</title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <!-- 리액트 -->
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <!-- 바벨 -->
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script type="text/babel">
+            // 바벨 사용할거면 위 스크립트 태그에 이렇게 넣어줘야 함
+            'use strict';
+
+            /*
+                컴포넌트 생성 방식
+                1. Class
+                2. Function (요즘은 다 함수형 컴포넌트 사용)
+
+            */
+
+            class LikeButton extends React.Component {
+                /* 컴포넌트명은 무조건 대문자로 시작해야함 */
+                /*
+                클래스형 컴포넌트 거의 안 쓰이지만 ErrorBoundary
+                또는 이미 제작된 옛날 React 웹 또는 라이브러리가 있을 수 있음
+             */
+                constructor(props) {
+                    super(props);
+                    this.state = { liked: false }; // REACT는 데이터 중심으로 움직임 state가 데이터 <- 바뀔 부분들
+                }
+
+                render() {
+                    if (this.state.liked) {
+                        return 'You liked this.';
+                    }
+                    /*
+                    return React.createElement('button', { onClick: () => this.setState({ liked: true }) }, 'Like'); // 얘가 실제로 뿌려지는 화면
+                    이거 너무 난해하고 꼴보기 싫어서 JSX 사용함 (뭐 자바스크립트 xml 합친거)
+                    JSX는 실제로 js에서 알아들을 수 없는 문법이라 바벨을 이용하면 알아서 위 문장으로 바꿔준다
+                     */
+
+                    // {this.state.liked = true}로 하면 되는거 아니냐? 라고 할 수 있는데 아님 함부로 바꾸면 안됨...
+                    /* 
+                        const arr = [];
+                        pop, push, shift, unshift, splice
+                        와
+                        concat, slice 의 차이를 설명할 수 있는가?
+                        -> 위쪽의 메서드들은 배열을 직접적으로 건드는 메서드이고 아래의 메서드는 배열을 이용해 새로운 배열을 만드는(원본을 건들지 않는) 메서드임
+
+                        이와 마찬가지로 this.state.like = true로 만들어버리면 그동안 연결되어있던 참조가 끊어져버림
+                        -> this.setState({liked: true}); <- setState가 뭔진 모르겠지만 liked를 true로 변경(원본 참조를 건들지 않고 property만 하나 변경)
+                     */
+                    return (
+                        <>
+                            <button onClick={() => this.setState({ liked: true })}>
+                                {this.state.liked ? 'Liked' : 'Like'}
+                            </button>
+                            <input type="text" />
+                        </>
+                        // 두개의 형제 태그가 렌더링 되어야 할 경우엔 fragment(<> </> 로 감싸줘야 한다.) == 하나의 태그만 들어가야 한다
+                    );
+                    // 여기의 <button>은 html 태그이므로 무조건 소문자로 해야함, 꼭 닫혀있어야함 js 코드부분은 중괄호로 감싸서 작성해야 함
+                }
+            }
+        </script>
+        <script type="text/babel">
+            // ReactDOM.render(React.createElement(LikeButton), document.getElementById('root')); 얘도 JSX로 바꿈
+            // ReactDOM.render(<LikeButton />, document.getElementById('root')); // 얘도 이젠 안씀
+            ReactDOM.createRoot(document.getElementById('root')).render(
+                <>
+                    <LikeButton />
+                    <LikeButton />
+                    <LikeButton />
+                    <LikeButton />
+                </>
+                // 여기로 마찬가지로 하나의 태그만 들어갈 수 있음(여러 개를 할 경우 부모를 만들어 한 개로 묶어주든 해야 함)
+            );
+        </script>
+    </body>
+</html>

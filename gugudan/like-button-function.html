@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>웹게임</title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <!-- 리액트 -->
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <!-- 바벨 -->
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script type="text/babel">
+            // 바벨 사용할거면 위 스크립트 태그에 이렇게 넣어줘야 함
+            'use strict';
+
+            /*
+                컴포넌트 생성 방식
+                1. Class
+                2. Function (요즘은 다 함수형 컴포넌트 사용)
+
+            */
+
+            // 함수 컴포넌트
+            const LikeButton = () => {
+                // 화살표 함수로 쓰면 this 쓸 일이 없어짐. . .
+
+                const [liked, setLiked] = React.useState(false); // 구조분해할당
+                /* 
+                    const result = React.useState(false);
+                    const liked = result[0]
+                    const setLiked = result[1]
+                    을 구조분해로 빼온 것
+                 */
+                if (liked) {
+                    return 'You liked this.';
+                }
+                return (
+                    <button
+                        onClick={() => {
+                            setLiked(true);
+                        }}
+                    >
+                        Like
+                    </button>
+                );
+            };
+        </script>
+        <script type="text/babel">
+            ReactDOM.createRoot(document.getElementById('root')).render(<LikeButton />);
+        </script>
+    </body>
+</html>
