@@ -26,16 +26,28 @@
                 onSubmit = (e) => {
                     e.preventDefault();
                     if (parseInt(this.state.value) === this.state.firstNum * this.state.secondNum) {
-                        this.setState({
-                            result: `${this.state.value} 정답!`,
-                            firstNum: Math.ceil(Math.random() * 9),
-                            secondNum: Math.ceil(Math.random() * 9),
-                            value: '',
+                        this.setState((prevState) => {
+                            /*
+                                setState의 파라미터에 객체가 아닌 객체를 반환하는 함수를 리턴시킨 것 (그 콜백함수는 이전의 상태값이 담겨있음) 
+                                -> 그냥 this.state.뭐시기를 쓸 거 같으면 (prevState) => {} 패턴으로 작성하자
+                             */
+                            return {
+                                result: `${prevState.value} 정답!`,
+                                firstNum: Math.ceil(Math.random() * 9),
+                                secondNum: Math.ceil(Math.random() * 9),
+                                value: '',
+                            };
                         });
+                        // document.querySelector('input').focus()와 동일함
+                        this.input.focus();
                     } else {
-                        this.setState({
-                            result: `${this.state.value}? 구구단도 못하는데 리액트를 하겠다고`,
-                            value: '',
+                        this.setState((prevState) => {
+                            return {
+                                result: `${prevState.value}? 구구단도 못하는데 리액트를 하겠다고`,
+                                value: '',
+                            };
+                            // document.querySelector('input').focus()와 동일함
+                            this.input.focus();
                         });
                     }
                 };
@@ -44,6 +56,13 @@
                     this.setState({ value: e.target.value });
                 };
 
+                onRefInput = (c) => {
+                    this.input = c;
+                };
+                // 리액트에서 DOM 요소에 접근 -> ref ~= js의 document.querySelector, getElementBy~ 같은거임
+                input;
+
+                // 실제로 나오게 되는 형태
                 render() {
                     return (
                         <>
@@ -51,7 +70,12 @@
                                 {this.state.firstNum}곱하기{this.state.secondNum}는?
                             </div>
                             <form onSubmit={this.onSubmit}>
-                                <input type="number" value={this.state.value} onChange={this.onChange} />
+                                <input
+                                    ref={this.onRefInput}
+                                    type="number"
+                                    value={this.state.value}
+                                    onChange={this.onChange}
+                                />
                                 <button>입력!</button>
                             </form>
                             <div>{this.state.result}</div>
@@ -62,6 +86,7 @@
         </script>
         <script type="text/babel">
             ReactDOM.render(
+                // 렌더링은 이렇게 할거임
                 <div>
                     <GuGuDan />
                     <GuGuDan />
