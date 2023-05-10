@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>구구단</title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <!-- 리액트 -->
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <!-- 바벨 -->
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script type="text/babel">
+            class GuGuDan extends React.Component {
+                constructor(props) {
+                    super(props);
+                    // 바뀌는 것들은 state에 넣어준다
+                    this.state = {
+                        firstNum: Math.ceil(Math.random() * 9),
+                        secondNum: Math.ceil(Math.random() * 9),
+                        value: '',
+                        result: '',
+                    };
+                }
+
+                onSubmit = (e) => {
+                    e.preventDefault();
+                    if (parseInt(this.state.value) === this.state.firstNum * this.state.secondNum) {
+                        this.setState((prevState) => {
+                            /*
+                                setState의 파라미터에 객체가 아닌 객체를 반환하는 함수를 리턴시킨 것 (그 콜백함수는 이전의 상태값이 담겨있음) 
+                                -> 그냥 this.state.뭐시기를 쓸 거 같으면 (prevState) => {} 패턴으로 작성하자
+                             */
+                            return {
+                                result: `${prevState.value} 정답!`,
+                                firstNum: Math.ceil(Math.random() * 9),
+                                secondNum: Math.ceil(Math.random() * 9),
+                                value: '',
+                            };
+                        });
+                        // document.querySelector('input').focus()와 동일함
+                        this.input.focus();
+                    } else {
+                        this.setState((prevState) => {
+                            return {
+                                result: `${prevState.value}? 구구단도 못하는데 리액트를 하겠다고`,
+                                value: '',
+                            };
+                            // document.querySelector('input').focus()와 동일함
+                            this.input.focus();
+                        });
+                    }
+                };
+
+                onChange = (e) => {
+                    this.setState({ value: e.target.value });
+                };
+
+                onRefInput = (c) => {
+                    this.input = c;
+                };
+                // 리액트에서 DOM 요소에 접근 -> ref ~= js의 document.querySelector, getElementBy~ 같은거임
+                input;
+
+                // 실제로 나오게 되는 형태
+                render() {
+                    return (
+                        <>
+                            <div>
+                                {this.state.firstNum}곱하기{this.state.secondNum}는?
+                            </div>
+                            <form onSubmit={this.onSubmit}>
+                                <input
+                                    ref={this.onRefInput}
+                                    type="number"
+                                    value={this.state.value}
+                                    onChange={this.onChange}
+                                />
+                                <button>입력!</button>
+                            </form>
+                            <div>{this.state.result}</div>
+                        </>
+                    );
+                }
+            }
+        </script>
+        <script type="text/babel">
+            ReactDOM.render(
+                // 렌더링은 이렇게 할거임
+                <div>
+                    <GuGuDan />
+                    <GuGuDan />
+                    <GuGuDan />
+                </div>,
+                document.getElementById('root')
+            );
+            // 각각의 구구단 컴포넌트가 별개로 동작함
+        </script>
+    </body>
+</html>

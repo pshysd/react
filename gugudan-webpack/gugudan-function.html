@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <title>구구단</title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <!-- 리액트 -->
+        <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <!-- 바벨 -->
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script type="text/babel">
+            // setState()나 ref()를 사용하지 않는 컴포넌트는 함수 컴포넌트로 만들어서 쓴다
+            /*
+                근데 함수 컴포넌트에도 setState() ref() 쓰면 좋잖아 -> Hooks 만들어줌
+                Hooks? use~ 뭐시기 붙는 메서드들
+             */
+            const GuGuDan = () => {
+                // 밑에 얘네들은 무조건 컴포넌트 안에 넣어줘야 함
+                const [firstNum, setFirstNum] = React.useState(Math.ceil(Math.random() * 9));
+                const [secondNum, setSecondNum] = React.useState(Math.ceil(Math.random() * 9));
+                const [value, setValue] = React.useState('');
+                const [result, setResult] = React.useState('');
+                const inputRef = React.useRef(null);
+
+                const onChangeInput = (e) => {
+                    setValue(e.target.value);
+                };
+
+                const onSubmitForm = (e) => {
+                    e.preventDefault();
+                    if (parseInt(value) === firstNum * secondNum) {
+                        setResult(`정답: ${value}`);
+                        setFirstNum(Math.ceil(Math.random() * 9));
+                        setSecondNum(Math.ceil(Math.random() * 9));
+                        setValue('');
+                        inputRef.current.focus();
+                    } else {
+                        setResult(`${value}?? 구구단도 못하는데 무슨 리액트`);
+                        setValue('');
+                        inputRef.current.focus();
+                    }
+                };
+
+                return (
+                    <>
+                        <div>
+                            {firstNum} 곱하기 {secondNum}는?
+                        </div>
+                        <form onSubmit={onSubmitForm}>
+                            <input ref={inputRef} onChange={onChangeInput} type="text" value={value} />
+                            <button>입력!</button>
+                        </form>
+                        <div id="result">{result}</div>
+                    </>
+                );
+            };
+        </script>
+        <script type="text/babel">
+            ReactDOM.render(<GuGuDan />, document.getElementById('root'));
+        </script>
+    </body>
+</html>
