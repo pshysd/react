@@ -42,7 +42,7 @@ class WordChain extends Component {
         <div>{this.state.word}</div>
         <form onSubmit={this.onSubmitForm}>
           <input type="text" ref={this.onRefInput} value={this.state.value} onChange={this.onChangeInput} />
-          <button>입력!</button>
+          <button className="submitBtn">입력!</button>
         </form>
         <div>{this.state.result}</div>
       </>
