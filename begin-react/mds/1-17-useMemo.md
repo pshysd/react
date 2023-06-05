@@ -1,8 +1,15 @@
+## useMemo를 사용하여 연산한 값 재사용하기
+
+`App.js`에 active 값이 true인 사용자의 수를 세는 `countActiveUsers`함수를 만든다
+
+**App.js**
+
+```js
 import React, { useRef, useState } from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
 
-const countActiveUsers = (users) => {
+const countActiveUsers = (users) => { <- 이부분 추가됐음
 	console.log('active 상태인 사용자의 수를 세는 중..');
 	return users.filter((user) => user.active).length;
 };
@@ -80,3 +87,4 @@ const App = () => {
 };
 
 export default App;
+```

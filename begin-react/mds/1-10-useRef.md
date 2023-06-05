@@ -1,3 +1,10 @@
+## useRef로 특정 DOM 선택하기
+
+`getElementById`, `querySelector`같은 역할
+
+**InputSample.js**
+
+```js
 import React, { useState, useRef } from 'react';
 
 const InputSample = () => {
@@ -23,7 +30,7 @@ const InputSample = () => {
 			name: '',
 			nickname: '',
 		});
-		nameInput.current.focus();
+		nameInput.current.focus(); <- onReset() 호출될 시 nameInput으로 포커스 잡힘
 	};
 
 	return (
@@ -40,3 +47,4 @@ const InputSample = () => {
 };
 
 export default InputSample;
+```

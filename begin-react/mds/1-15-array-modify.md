@@ -1,11 +1,11 @@
+## 배열 항목 수정하기
+
+**App.js** users 배열 안에 active 속성 추가, 클릭할 때 마다 색이 변하게 할 onToggle 함수 추가
+
+```js
 import React, { useRef, useState } from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
-
-const countActiveUsers = (users) => {
-	console.log('active 상태인 사용자의 수를 세는 중..');
-	return users.filter((user) => user.active).length;
-};
 
 const App = () => {
 	const [inputs, setInputs] = useState({
@@ -68,7 +68,7 @@ const App = () => {
 	};
 
 	const onToggle = (id) => {
-		setUsers(users.map((user) => (user.id === id ? { ...user, active: !user.active } : user)));
+		setUsers(users.map((user) => (user.id === id ? { ...user, active: !user.active } : user)));  <- users를 순회하며 이벤트가 발생한 user의 id와 같은걸 찾아서 user의 속성을 spread, 그리고 active 속성은 현재 user.active 속성의 반대인 새로운 객체를 생성. 아닐 경우 그냥 내비둠. 이것들 모아서 새로운 배열 생성
 	};
 
 	return (
@@ -80,3 +80,39 @@ const App = () => {
 };
 
 export default App;
+```
+
+**UserList.js**
+
+```js
+import React from 'react';
+
+const User = ({ user, onRemove, onToggle }) => {
+	return (
+		<div>
+			<b
+				style={{
+					cursor: 'pointer',
+					color: user.active ? 'green' : 'black',
+				}}
+				onClick={() => onToggle(user.id)}>
+				{user.username}
+			</b>
+			<span>({user.email})</span>
+			<button onClick={() => onRemove(user.id)}>삭제</button>
+		</div>
+	);
+};
+
+const UserList = ({ users, onRemove, onToggle }) => {
+	return (
+		<div>
+			{users.map((user, index) => (
+				<User user={user} key={index} onRemove={onRemove} onToggle={onToggle} /> <- props로 내려줬다
+			))}
+		</div>
+	);
+};
+
+export default UserList;
+```
