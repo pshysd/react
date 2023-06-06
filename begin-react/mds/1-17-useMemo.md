@@ -1,6 +1,10 @@
 ## useMemo를 사용하여 연산한 값 재사용하기
+성능 최적화에 사용됨
 
-`App.js`에 active 값이 true인 사용자의 수를 세는 `countActiveUsers`함수를 만든다
+
+`App.js`에 active 값이 true인 사용자의 수를 세는 `countActiveUsers`함수를 만들어주고,
+
+`count`라는 변수에 담아 렌더링
 
 **App.js**
 
@@ -9,7 +13,7 @@ import React, { useRef, useState } from 'react';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
 
-const countActiveUsers = (users) => { <- 이부분 추가됐음
+const countActiveUsers = (users) => {
 	console.log('active 상태인 사용자의 수를 세는 중..');
 	return users.filter((user) => user.active).length;
 };
@@ -60,6 +64,7 @@ const App = () => {
 		};
 
 		setUsers(users.concat(user));
+
 		setInputs({
 			username: '',
 			email: '',
@@ -69,8 +74,6 @@ const App = () => {
 	};
 
 	const onRemove = (id) => {
-		// user.id가 파라미터로 일치하지 않는 원소만 추출해서 새로운 배열을 만듦
-		// == user.id가 id인 것을 제거함.
 		setUsers(users.filter((user) => user.id !== id));
 	};
 
@@ -78,13 +81,27 @@ const App = () => {
 		setUsers(users.map((user) => (user.id === id ? { ...user, active: !user.active } : user)));
 	};
 
+	const count = countActiveUsers(users);
+
 	return (
 		<>
 			<CreateUser username={username} email={email} onChange={onChange} onCreate={onCreate} />
 			<UserList users={users} onRemove={onRemove} onToggle={onToggle} />
+			<div>활성 사용자 수: {count}</div>
 		</>
 	);
 };
 
 export default App;
+
 ```
+
+근데 이렇게 작성하면 input에 값을 변경할 때에도 count가 호출됨 <- 메모리 낭비
+
+이러한 상황에 `useMemo` 사용 <- 이전에 계산한 값을 재사용
+
+`const count = useMemo(() => countActiveUsers(users), [users]);`
+
+첫 번째 파라미터에는 어떻게 연산할지 정의하는 함수를 넣어준다.
+
+두 번째 파라미터에는 `deps` 배열을 넣어준다.
