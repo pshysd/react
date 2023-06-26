@@ -43,6 +43,7 @@ const useAsync = (callback, deps = []) => {
 	};
 
 	useEffect(() => {
+		if (skip) return;
 		fetchData();
 		// esLint 설정을 다음 줄에서만 비활성화
 		// esLint-disable-next-line
