@@ -1,4 +1,5 @@
 const path = require('path');
+const refreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 module.exports = {
 	name: 'word-relay-setting', // 내 맘대로 짓는 이름
@@ -33,14 +34,22 @@ module.exports = {
 						],
 						'@babel/preset-react',
 					],
-					plugins: [],
+					plugins: ['react-refresh/babel'],
 				},
 			},
 		],
 	},
+	plugins: [new refreshWebpackPlugin()],
 	// 출력
 	output: {
 		path: path.join(__dirname, 'dist'), // 생성할 경로
 		filename: 'app.js', // 어떤 이름으로 만들건지
+		publicPath: '/dist/',
+	},
+
+	devServer: {
+		devMiddleware: { publicPath: '/dist/' },
+		static: { directory: path.resolve(__dirname) }, // index.html의 경로
+		hot: true,
 	},
 };
