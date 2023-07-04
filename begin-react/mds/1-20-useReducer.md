@@ -265,6 +265,10 @@ const App = () => {
 
 액션 디스패치 리듀서가 존재하고
 
+
+
+리듀서는 state, action을 파라미터로 받는다.
+
 Dispatch에 Action을 담아 Reducer로 보내면 Reducer에 Action에 따라 정의된 로직에 맞춰 State를 처리해서 Return해줌
 
 이게 전부임
