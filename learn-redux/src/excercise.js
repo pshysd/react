@@ -11,14 +11,12 @@ const initialState = {
 };
 
 /* 액션 타입 정의 */
-// 액션 타입은 주로 대문자로 작성
 const INCREASE = 'INCREASE';
 const DECREASE = 'DECREASE';
 const CHANGE_TEXT = 'CHANGE_TEXT';
 const ADD_TO_LIST = 'ADD_TO_LIST';
 
 /* 액션 생성 함수 정의 */
-// 액션 생성 함수는 주로 camelCase로 정의
 
 const increase = () => ({ type: INCREASE });
 const decrease = () => ({ type: DECREASE });
@@ -26,9 +24,6 @@ const changeText = (text) => ({ type: CHANGE_TEXT, text });
 const addToList = (item) => ({ type: ADD_TO_LIST, item });
 
 /* 리듀서 만들기 */
-// 위 액션 생성 함수들을 통해 만들어진 객체들을 참조하여
-// 새로운 상태를 만드는 함수를 만들어보자
-// 주의: 리듀서는 불변성을 꼭 지켜줘야 한다.
 
 const reducer = (state = initialState, action) => {
 	// state의 초깃값 initialState로
